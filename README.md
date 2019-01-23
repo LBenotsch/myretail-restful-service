@@ -23,9 +23,9 @@ http://localhost:8080/products/x
 "x" being the ID to search
 
 Ex.
-http://localhost:8080/products/13860420
+http://localhost:8080/products/13860428
 
-More ID's to use: 13860428, 13860420, 13860421, 13860422
+More ID's to use: 13860420, 13860421, 13860422
 ```
 
 To test POST request, send a JSON body to:
