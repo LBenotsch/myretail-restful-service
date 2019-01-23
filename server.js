@@ -13,7 +13,7 @@ app.get('/', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.send("You have reached the myRetail RESTful Service");
-    console.log("/ GET - Homepage hit")
+    console.log("/ GET - Homepage Hit")
 });
 
 //GET product data by ID (ex. use id's 13860428, 13860420, 13860421, 13860422)
@@ -103,7 +103,7 @@ app.get('/products/:id', function (req, res) {
         });
     };
 
-    //Call merge function and send to page
+    //Call merge function and send JSON to page
     mergeProductJson(function (mergedProducts) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -112,7 +112,9 @@ app.get('/products/:id', function (req, res) {
 
 });
 
+//POST update a product in the Mongo DB by ID. Accepts a JSON body.
 app.post('/products', function (req, res) {
+    //Store incoming request body, and assign data to vars
     var json = req.body;
     var id = json._id;
     var value = json.current_price.value;
@@ -121,6 +123,7 @@ app.post('/products', function (req, res) {
     //Connection URL
     const url = 'mongodb+srv://admin:admin@cluster0-rsbhl.mongodb.net/targetDB';
 
+    //Find searched ID and assign new values
     MongoClient.connect(url, {
         useNewUrlParser: true
     }, function (err, db) {
@@ -138,14 +141,15 @@ app.post('/products', function (req, res) {
                 }
             }
         };
+        //Make the update to the single collection
         dbo.collection("products").updateOne(myquery, newvalues, function (err, res) {
             if (err) throw err;
+            //Determine if ID was found to update
             if (res.matchedCount > 0) {
                 console.log("Product ID:" + id + " updated");
             } else {
                 console.log("Product ID:" + id +" not found to update")
             }
-
             db.close();
         });
     });
@@ -153,6 +157,7 @@ app.post('/products', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.send("POST request sent!");
+    console.log("/ POST - Product Post Recieved");
 });
 
 //Start the server

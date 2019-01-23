@@ -1,1 +1,3 @@
+// Example body to post req with
+
 {"_id":13860422, "current_price":{"value":"30.00","currency_code":"USD"}}
