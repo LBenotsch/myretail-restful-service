@@ -1,10 +1,12 @@
-const express = require('express');
+const express = require('express'),
+    bodyParser = require('body-parser');
 const request = require('request');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 const app = express();
 const port = process.env.PORT || 8080;
+app.use(bodyParser.json());
 
 //GET homepage
 app.get('/', function (req, res) {
@@ -102,12 +104,55 @@ app.get('/products/:id', function (req, res) {
     };
 
     //Call merge function and send to page
-    mergeProductJson(function (mergedJson) {
+    mergeProductJson(function (mergedProducts) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.json(mergedJson);
+        res.json(mergedProducts);
     });
 
+});
+
+app.post('/products', function (req, res) {
+    var json = req.body;
+    var id = json._id;
+    var value = json.current_price.value;
+    var currency_code = json.current_price.currency_code;
+
+    //Connection URL
+    const url = 'mongodb+srv://admin:admin@cluster0-rsbhl.mongodb.net/targetDB';
+
+    MongoClient.connect(url, {
+        useNewUrlParser: true
+    }, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("targetDB");
+        var myquery = {
+            _id: id
+        };
+        var newvalues = {
+            $set: {
+                _id: id,
+                current_price: {
+                    value: value,
+                    currency_code: currency_code
+                }
+            }
+        };
+        dbo.collection("products").updateOne(myquery, newvalues, function (err, res) {
+            if (err) throw err;
+            if (res.matchedCount > 0) {
+                console.log("Product ID:" + id + " updated");
+            } else {
+                console.log("Product ID:" + id +" not found to update")
+            }
+
+            db.close();
+        });
+    });
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.send("POST request sent!");
 });
 
 //Start the server
