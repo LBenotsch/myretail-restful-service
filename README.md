@@ -7,7 +7,7 @@ Run by using:
 node server.js
 ```
 
-With an internet browser, go to:
+To test GET request, With an internet browser, go to:
 ```
 http://localhost:8080/products/xxxx //("xxxx" being the ID to search)
 
@@ -15,7 +15,7 @@ Ex.
 http://localhost:8080/products/13860420
 ```
 
-To Post request, send a JSON body to:
+To test Post request, send a JSON body to:
 ```
 http://localhost:8080/products/
 ```
