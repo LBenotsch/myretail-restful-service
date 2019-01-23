@@ -7,8 +7,9 @@ Run by using:
 node server.js
 ```
 
-With an internet browser, ("xxxx" being the ID to search) go to:
+With an internet browser, go to:
 ```
+//("xxxx" being the ID to search)
 http://localhost:8080/products/xxxx
 
 Ex.
@@ -19,7 +20,7 @@ To Post request, send a JSON body to:
 ```
 http://localhost:8080/products/
 ```
-That contains this format:
+Containing this format:
 ```
 {
 "_id":13860422, //ID to update
