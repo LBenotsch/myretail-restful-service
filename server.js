@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
     console.log("/ GET - Homepage hit")
 });
 
-//GET product data by ID (ex. use id 13860428 or 13860420)
+//GET product data by ID (ex. use id's 13860428, 13860420, 13860421, 13860422)
 app.get('/products/:id', function (req, res) {
     //Store initial ID
     var id = req.params.id;
@@ -26,7 +26,15 @@ app.get('/products/:id', function (req, res) {
         console.log("/ GET - Product Search - ID:" + id);
     } else {
         console.log("Invalid ID was searched");
-        res.send("Invalid ID was searched");
+        res.status(400);
+        res.json({
+            "product": {
+                "item": {
+                    "error_message": "Invalid ID",
+                    "status_code": 400
+                }
+            }
+        });
         return;
     }
 
@@ -41,9 +49,10 @@ app.get('/products/:id', function (req, res) {
             //When target returns data
             if (!error && response.statusCode === 200) {
                 callback(targetProduct);
-            //When target doesn't have ID info but returns default data
+                //When target doesn't have ID info but returns default data
             } else if (!error && response.statusCode === 404) {
                 console.log("ID not found on Target DB");
+                res.status(400);
                 callback(targetProduct);
             }
         });
@@ -72,7 +81,7 @@ app.get('/products/:id', function (req, res) {
                     console.log("ID not found on Mongo DB");
                     callback(null);
                 } else {
-                callback(data[0].current_price);
+                    callback(data[0].current_price);
                 }
             });
         });
@@ -83,7 +92,10 @@ app.get('/products/:id', function (req, res) {
         getTargetProductJsonByID(function (targetProduct) {
             getMongoProductJsonByID(function (mongoProduct) {
                 var mergedProducts = Object.assign({}, targetProduct);
-                mergedProducts.product.item.current_price = mongoProduct;
+                if (mongoProduct != null) {
+                    mergedProducts.product.item.current_price = mongoProduct;
+                    res.status(200);
+                }
                 callback(mergedProducts);
             });
         });
@@ -93,7 +105,7 @@ app.get('/products/:id', function (req, res) {
     mergeProductJson(function (mergedJson) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.send(JSON.stringify(mergedJson));
+        res.json(mergedJson);
     });
 
 });
