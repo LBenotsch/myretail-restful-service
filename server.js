@@ -23,6 +23,7 @@ app.get('/products/:id', function (req, res) {
     if (!isNaN(id)) {
         //Store valid ID
         id = parseInt(req.params.id);
+        console.log("/ GET - Product Search - ID:" + id);
     } else {
         console.log("Invalid ID was searched");
         res.send("Invalid ID was searched");
@@ -37,8 +38,10 @@ app.get('/products/:id', function (req, res) {
             url: targetUrl,
             json: true
         }, function (error, response, targetProduct) {
+            //When target returns data
             if (!error && response.statusCode === 200) {
                 callback(targetProduct);
+            //When target doesn't have ID info but returns default data
             } else if (!error && response.statusCode === 404) {
                 console.log("ID not found on Target DB");
                 callback(targetProduct);
@@ -47,7 +50,7 @@ app.get('/products/:id', function (req, res) {
     };
 
     //Get Mongo json by ID
-    function getMongoProductsJsonByID(callback) {
+    function getMongoProductJsonByID(callback) {
         //Connection URL
         const url = 'mongodb+srv://admin:admin@cluster0-rsbhl.mongodb.net/targetDB';
         //Database Name
@@ -60,14 +63,14 @@ app.get('/products/:id', function (req, res) {
             const db = client.db(dbName);
             //Get the documents collection
             const collection = db.collection('products');
-            //Query collections by filter
+            //Query collections by id
             collection.find({
                 '_id': id
             }).toArray(function (err, data) {
                 assert.equal(err, null);
                 if (data === undefined || data.length == 0) {
                     console.log("ID not found on Mongo DB");
-                    callback("");
+                    callback(null);
                 } else {
                 callback(data[0].current_price);
                 }
@@ -78,7 +81,7 @@ app.get('/products/:id', function (req, res) {
     //Merge both APIs
     function mergeProductJson(callback) {
         getTargetProductJsonByID(function (targetProduct) {
-            getMongoProductsJsonByID(function (mongoProduct) {
+            getMongoProductJsonByID(function (mongoProduct) {
                 var mergedProducts = Object.assign({}, targetProduct);
                 mergedProducts.product.item.current_price = mongoProduct;
                 callback(mergedProducts);
@@ -86,14 +89,13 @@ app.get('/products/:id', function (req, res) {
         });
     };
 
-    //Calll merge function and send
+    //Call merge function and send to page
     mergeProductJson(function (mergedJson) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.send(JSON.stringify(mergedJson));
     });
 
-    console.log("/ GET - Product Search - ID:" + id);
 });
 
 //Start the server
