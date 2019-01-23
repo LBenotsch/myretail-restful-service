@@ -42,3 +42,9 @@ Containing this example format:
     }
 }
 ```
+Using Postman on Windows or Curl in Linux
+```
+https://www.getpostman.com/downloads/
+or
+curl -X POST -H "Content-Type: application/json" -d '{"_id": 13860422,"current_price": {"value": "30.00","currency_code": "USD"}}' http://localhost:8080/products
+```
