@@ -32,7 +32,7 @@ To test POST request, send a JSON body to:
 ```
 http://localhost:8080/products/
 ```
-Containing this format:
+Containing this example format:
 ```
 {
     "_id": 13860422,
