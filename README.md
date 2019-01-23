@@ -6,7 +6,7 @@ Install NodeJS (includes NPM):
 ```
 https://nodejs.org/en/download/
 ```
-Cloan or download this repository, and run:
+Cloan or download this repository, and in the same directory run:
 ```
 npm install
 ```
