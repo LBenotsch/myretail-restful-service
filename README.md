@@ -9,7 +9,8 @@ node server.js
 
 To test GET request, With an internet browser, go to:
 ```
-http://localhost:8080/products/x //"x" being the ID to search
+http://localhost:8080/products/x
+"x" being the ID to search
 
 Ex.
 http://localhost:8080/products/13860420
