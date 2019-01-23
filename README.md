@@ -15,3 +15,17 @@ Ex.
 http://localhost:8080/products/13860420
 ```
 
+To Post request, send a JSON body to:
+```
+http://localhost:8080/products/
+```
+That contains this format:
+```
+{
+"_id":13860422, //ID to update
+"current_price":{
+  "value":"30.00",
+  "currency_code":"USD"
+  }
+}
+```
