@@ -1,13 +1,23 @@
 # myretail-restful-service
 A simple RESTful service in Nodejs that retrieves products by ID via multiple NoSQL data stores.
 
+# Requirements
+Install NodeJS (includes NPM):
+```
+https://nodejs.org/en/download/
+```
+Cloan or download this repository, and in the same directory run:
+```
+npm install
+```
+
 # Instructions
 Run by using:
 ```
 node server.js
 ```
 
-To test GET request, With an internet browser, go to:
+To test GET request, with an internet browser, go to:
 ```
 http://localhost:8080/products/x
 "x" being the ID to search
