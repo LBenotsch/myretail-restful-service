@@ -9,8 +9,7 @@ node server.js
 
 With an internet browser, go to:
 ```
-//("xxxx" being the ID to search)
-http://localhost:8080/products/xxxx
+http://localhost:8080/products/xxxx //("xxxx" being the ID to search)
 
 Ex.
 http://localhost:8080/products/13860420
