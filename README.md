@@ -15,7 +15,7 @@ Ex.
 http://localhost:8080/products/13860420
 ```
 
-To test Post request, send a JSON body to:
+To test POST request, send a JSON body to:
 ```
 http://localhost:8080/products/
 ```
