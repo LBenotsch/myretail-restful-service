@@ -35,10 +35,10 @@ http://localhost:8080/products/
 Containing this format:
 ```
 {
-"_id":13860422, //ID to update
-"current_price":{
-  "value":"30.00",
-  "currency_code":"USD"
-  }
+    "_id": 13860422,
+    "current_price": {
+        "value": "30.00",
+        "currency_code": "USD"
+    }
 }
 ```
