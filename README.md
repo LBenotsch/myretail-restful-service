@@ -24,6 +24,8 @@ http://localhost:8080/products/x
 
 Ex.
 http://localhost:8080/products/13860420
+
+More ID's to use: 13860428, 13860420, 13860421, 13860422
 ```
 
 To test POST request, send a JSON body to:
